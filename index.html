@@ -1,44 +1,23 @@
-<!DOCTYPE html>
-<html lang="ko">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>아이스리의 여우 기록소</title>
-  <link rel="stylesheet" href="style.css" />
-  <script src="https://www.gstatic.com/charts/loader.js"></script>
-</head>
-<body>
-  <div class="decor d1">❄</div>
-  <div class="decor d2">🐾</div>
-  <div class="decor d3">✦</div>
-  <div class="decor d4">❄</div>
-  <div class="decor d5">🐾</div>
-
-  <main class="wrap">
-    <header class="hero">
-      <section>
-        <div class="badge">IRIS</div>
-        <h1>아이스리의 여우 기록소🦊</h1>
-        <p>민트 숲속에 남겨진 말랑한 발자국 기록</p>
-      </section>
-
-      <label class="imageBox" for="imageInput">
-        <img id="heroImage" alt="대표 이미지" />
-        <span id="imageGuide">이미지 넣기</span>
-      </label>
-      <input id="imageInput" type="file" accept="image/*" hidden />
-    </header>
-
-    <input id="searchInput" type="search" placeholder="🐾여우 발자국 찾기..." />
-
-    <div id="status">스프레드시트 불러오는 중...</div>
-    <section id="list" class="cardList"></section>
-  </main>
-
-  <script>
-    const SHEET_ID = "16d85KZSBTErd9wFSaLMztskl86aJlwlchABFwcXv0i8";
-    const SHEET_NAME = "시트1";
-  </script>
-  <script src="script.js"></script>
-</body>
-</html>
+<!doctype html><html lang="ko"><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>IRIS Header Sample</title>
+<style>
+body{margin:0;background:linear-gradient(135deg,#e6fffb,#fff,#c9f7f2);font-family:sans-serif}
+.hero{max-width:1200px;margin:20px auto;padding:32px;border-radius:32px;background:rgba(255,255,255,.6);display:flex;justify-content:space-between;align-items:center}
+.badge{display:inline-block;padding:8px 16px;border:1px solid #8fe7db;border-radius:999px;color:#5dbdb2;font-weight:700}
+h1{font-size:56px;color:#fff;text-shadow:0 0 8px #79d9cc,0 3px 0 #7fded2}
+.imageBox{width:190px;height:190px;border-radius:36px;background:linear-gradient(145deg,#fff,#d8faf6);display:grid;place-items:center;overflow:hidden;border:2px solid #9feee5}
+.imageBox img{width:100%;height:100%;object-fit:contain}
+</style></head><body>
+<div class="hero">
+<div>
+<div class="badge">IRIS</div>
+<h1>아이스리의 여우 기록소🦊</h1>
+<p>민트 숲속에 남겨진 말랑한 발자국 기록</p>
+</div>
+<div class="imageBox">
+<img src="fox_sd.png" alt="fox">
+</div>
+</div>
+</body></html>
