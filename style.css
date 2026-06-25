@@ -1,0 +1,9 @@
+body{margin:0;font-family:Pretendard,'Segoe UI',sans-serif;background:linear-gradient(180deg,#c9f7f2,#f8fffe);color:#425454}
+.snow{position:fixed;inset:0;pointer-events:none;opacity:.18;font-size:28px;display:flex;justify-content:space-around;padding-top:40px}
+.container{max-width:360px;margin:28px auto;padding:16px}
+h1{text-align:center}
+#searchInput{width:100%;padding:14px 18px;border:2px solid #a9eee4;border-radius:30px;box-sizing:border-box;background:#fff}
+.card-list{display:flex;flex-direction:column;gap:18px;margin-top:18px}
+.item{background:#fff;border:2px solid #a9eee4;border-radius:24px;padding:14px;box-shadow:0 3px 10px rgba(0,0,0,.05);transition:.2s}
+.item:hover{transform:translateY(-2px);box-shadow:0 6px 16px rgba(126,223,208,.18)}
+.item-title{font-weight:700;margin-bottom:8px}.item-row{margin:4px 0}.empty{text-align:center}
