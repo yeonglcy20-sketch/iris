@@ -74,12 +74,12 @@ h1{
   font-weight:800;
 }
 .imageBox{
-  width:210px;
-  height:210px;
-  flex:0 0 210px;
+  width:260px;
+  height:260px;
+  flex:0 0 260px;
   display:grid;
   place-items:center;
-  border-radius:42px;
+  border-radius:48px;
   border:2px solid var(--mint2);
   background:linear-gradient(145deg,rgba(255,255,255,.96),rgba(210,250,245,.86));
   box-shadow:
@@ -88,10 +88,11 @@ h1{
   overflow:hidden;
 }
 .imageBox img{
-  width:100%;
-  height:100%;
+  width:96%;
+  height:96%;
   object-fit:contain;
-  padding:6px;
+  object-position:center bottom;
+  padding:0;
   filter:drop-shadow(0 10px 14px rgba(63,139,133,.14));
 }
 #searchInput{
@@ -186,9 +187,9 @@ h1{
     gap:12px;
   }
   .imageBox{
-    width:112px;
-    height:112px;
-    flex-basis:112px;
+    width:140px;
+    height:140px;
+    flex-basis:140px;
     border-radius:28px;
   }
   .hero p{font-size:15px}
