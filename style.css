@@ -74,31 +74,25 @@ h1{
   font-weight:800;
 }
 .imageBox{
-  width:190px;
-  height:190px;
-  flex:0 0 190px;
+  width:210px;
+  height:210px;
+  flex:0 0 210px;
   display:grid;
   place-items:center;
   border-radius:42px;
-  border:2px dashed var(--mint2);
-  background:linear-gradient(145deg,rgba(255,255,255,.95),rgba(210,250,245,.82));
-  box-shadow:0 12px 30px rgba(111,211,201,.22);
+  border:2px solid var(--mint2);
+  background:linear-gradient(145deg,rgba(255,255,255,.96),rgba(210,250,245,.86));
+  box-shadow:
+    0 12px 30px rgba(111,211,201,.22),
+    0 0 24px rgba(117,220,204,.25);
   overflow:hidden;
-  cursor:pointer;
 }
 .imageBox img{
   width:100%;
   height:100%;
   object-fit:contain;
-  padding:10px;
-  display:none;
-}
-.imageBox.hasImage img{display:block}
-.imageBox.hasImage span{display:none}
-.imageBox span{
-  font-weight:900;
-  color:#5fbdb3;
-  font-size:18px;
+  padding:6px;
+  filter:drop-shadow(0 10px 14px rgba(63,139,133,.14));
 }
 #searchInput{
   width:100%;
@@ -179,17 +173,30 @@ h1{
 .d3{left:52%;top:16%;font-size:38px;animation-delay:.2s}
 .d4{right:10%;top:37%;font-size:56px;animation-delay:.8s}
 .d5{right:18%;bottom:13%;font-size:44px;animation-delay:1.2s}
+.d6{right:34%;bottom:28%;font-size:34px;animation-delay:1.5s}
 @keyframes float{
   from{transform:translateY(-8px) rotate(-4deg)}
   to{transform:translateY(8px) rotate(4deg)}
 }
 @media(max-width:680px){
   .wrap{width:min(390px,calc(100% - 24px));padding-top:22px}
-  .hero{padding:24px 18px;min-height:auto}
-  .imageBox{width:112px;height:112px;flex-basis:112px;border-radius:28px}
-  .imageBox span{font-size:13px}
+  .hero{
+    padding:24px 18px;
+    min-height:auto;
+    gap:12px;
+  }
+  .imageBox{
+    width:112px;
+    height:112px;
+    flex-basis:112px;
+    border-radius:28px;
+  }
   .hero p{font-size:15px}
   #searchInput{margin:22px 0 14px;font-size:15px;border-radius:22px}
   .cardList{grid-template-columns:1fr;gap:16px}
   .card{min-height:auto}
+}
+@media(max-width:470px){
+  .hero{flex-direction:column;align-items:flex-start}
+  .imageBox{align-self:center;width:170px;height:170px;flex-basis:170px}
 }

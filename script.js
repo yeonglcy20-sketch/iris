@@ -1,23 +1,8 @@
 const listEl = document.getElementById("list");
 const statusEl = document.getElementById("status");
 const searchInput = document.getElementById("searchInput");
-const imageInput = document.getElementById("imageInput");
-const imageBox = document.querySelector(".imageBox");
-const heroImage = document.getElementById("heroImage");
 
 let allCards = [];
-
-imageInput.addEventListener("change", () => {
-  const file = imageInput.files && imageInput.files[0];
-  if (!file) return;
-
-  const reader = new FileReader();
-  reader.onload = () => {
-    heroImage.src = reader.result;
-    imageBox.classList.add("hasImage");
-  };
-  reader.readAsDataURL(file);
-});
 
 google.charts.load("current", { packages: ["corechart"] });
 google.charts.setOnLoadCallback(loadSheet);
