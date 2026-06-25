@@ -1,90 +1,136 @@
-const SHEET_ID='16d85KZSBTErd9wFSaLMztskl86aJlwlchABFwcXv0i8';
-const SHEET_NAME='시트1';
-const csvUrl=`https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&sheet=${encodeURIComponent(SHEET_NAME)}`;
+const listEl = document.getElementById("list");
+const statusEl = document.getElementById("status");
+const searchInput = document.getElementById("searchInput");
+const imageInput = document.getElementById("imageInput");
+const imageBox = document.querySelector(".imageBox");
+const heroImage = document.getElementById("heroImage");
 
-const listEl=document.getElementById('list');
-const searchInput=document.getElementById('searchInput');
-const imageInput=document.getElementById('imageInput');
-const imageBox=document.querySelector('.image-box');
-const heroImage=document.getElementById('heroImage');
-let data=[];
+let allCards = [];
 
-imageInput.addEventListener('change',()=>{
-  const file=imageInput.files?.[0];
-  if(!file) return;
-  const reader=new FileReader();
-  reader.onload=()=>{
-    heroImage.src=reader.result;
-    imageBox.classList.add('has-image');
+imageInput.addEventListener("change", () => {
+  const file = imageInput.files && imageInput.files[0];
+  if (!file) return;
+
+  const reader = new FileReader();
+  reader.onload = () => {
+    heroImage.src = reader.result;
+    imageBox.classList.add("hasImage");
   };
   reader.readAsDataURL(file);
 });
 
-fetch(csvUrl)
-.then(r=>r.text())
-.then(csv=>{
-  data=parseCSV(csv);
-  render(data);
-})
-.catch(err=>{
-  listEl.innerHTML='<div class="empty">데이터를 불러오지 못했습니다.<br>스프레드시트 공유 설정을 확인해주세요.</div>';
-  console.error(err);
-});
+google.charts.load("current", { packages: ["corechart"] });
+google.charts.setOnLoadCallback(loadSheet);
 
-function parseCSV(csv){
-  const rows=csv.trim().split('\n').map(row =>
-    row.match(/(".*?"|[^",]+)(?=\s*,|\s*$)/g)?.map(cell =>
-      cell.replace(/^"|"$/g,'').replace(/""/g,'"').trim()
-    ) || []
-  );
-  const headers=rows.shift() || [];
-  return rows.map(row=>{
-    const obj={};
-    headers.forEach((h,i)=>{ obj[h]=row[i] || ''; });
-    return obj;
-  });
+function loadSheet() {
+  const url =
+    "https://docs.google.com/spreadsheets/d/" +
+    SHEET_ID +
+    "/gviz/tq?sheet=" +
+    encodeURIComponent(SHEET_NAME) +
+    "&tq=" +
+    encodeURIComponent("select *");
+
+  const query = new google.visualization.Query(url);
+  query.send(handleQueryResponse);
 }
 
-function isVisibleValue(value){
-  const v=String(value ?? '').trim();
-  return v !== '' && v !== '0';
+function handleQueryResponse(response) {
+  if (response.isError()) {
+    statusEl.innerHTML =
+      "스프레드시트 연동 실패<br>공유 설정을 '링크가 있는 모든 사용자 - 뷰어'로 바꿔주세요.";
+    console.error(response.getMessage(), response.getDetailedMessage());
+    return;
+  }
+
+  const table = response.getDataTable();
+  allCards = tableToCards(table);
+  statusEl.textContent = "";
+  render(allCards);
 }
 
-function render(items){
-  listEl.innerHTML='';
-  let visibleCount=0;
+function tableToCards(table) {
+  const colCount = table.getNumberOfColumns();
+  const rowCount = table.getNumberOfRows();
 
-  items.forEach(item=>{
-    const first=Object.keys(item)[0];
-    const title=String(item[first] ?? '').trim();
+  const headers = [];
+  for (let c = 0; c < colCount; c++) {
+    headers.push(table.getColumnLabel(c) || "");
+  }
 
-    const visibleRows=Object.entries(item)
-      .slice(1)
-      .filter(([key,value])=>isVisibleValue(value));
+  const cards = [];
+  for (let r = 0; r < rowCount; r++) {
+    const name = clean(table.getFormattedValue(r, 0));
+    if (!name) continue;
 
-    if(!title || visibleRows.length===0) return;
+    const rows = [];
+    for (let c = 1; c < colCount; c++) {
+      const key = clean(headers[c]);
+      const value = clean(table.getFormattedValue(r, c));
 
-    const div=document.createElement('div');
-    div.className='item';
+      if (!key) continue;
+      if (!isVisible(value)) continue;
+
+      rows.push({ key, value });
+    }
+
+    if (rows.length > 0) {
+      cards.push({ name, rows });
+    }
+  }
+
+  return cards;
+}
+
+function clean(value) {
+  return String(value ?? "").replace(/^"|"$/g, "").trim();
+}
+
+function isVisible(value) {
+  const v = clean(value);
+  return v !== "" && v !== "0";
+}
+
+function render(cards) {
+  listEl.innerHTML = "";
+
+  if (!cards.length) {
+    listEl.innerHTML = '<div class="empty">표시할 데이터가 없습니다.</div>';
+    return;
+  }
+
+  cards.forEach(card => {
+    const div = document.createElement("article");
+    div.className = "card";
     div.innerHTML =
-      `<div class="item-title">🐾 ${title}</div>`+
-      visibleRows.map(([k,v])=>`<div class="item-row"><b>${k}</b> : ${v}</div>`).join('');
+      `<div class="name">🐾 ${escapeHtml(card.name)}</div>` +
+      card.rows
+        .map(row => `<div class="row"><b>${escapeHtml(row.key)}</b> : ${escapeHtml(row.value)}</div>`)
+        .join("");
 
     listEl.appendChild(div);
-    visibleCount++;
   });
-
-  if(visibleCount===0){
-    listEl.innerHTML='<div class="empty">표시할 데이터가 없습니다.</div>';
-  }
 }
 
-searchInput.addEventListener('input',()=>{
-  const q=searchInput.value.toLowerCase().trim();
-  const filtered=data.filter(item =>
-    Object.values(item).some(value =>
-      String(value).toLowerCase().includes(q)
-    )
-  );
+searchInput.addEventListener("input", () => {
+  const q = searchInput.value.trim().toLowerCase();
+
+  const filtered = allCards.filter(card => {
+    const text =
+      card.name +
+      " " +
+      card.rows.map(row => row.key + " " + row.value).join(" ");
+    return text.toLowerCase().includes(q);
+  });
+
   render(filtered);
 });
+
+function escapeHtml(text) {
+  return String(text)
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#039;");
+}
