@@ -17,11 +17,16 @@
   <main class="wrap">
     <header class="hero">
       <div>
-        <div class="badge">WHITE FOX · MINT</div>
+        <div class="badge">IRIS</div>
         <h1>아이스리의 여우 기록소🦊</h1>
         <p>민트 숲속에 남겨진 말랑한 발자국 기록</p>
       </div>
-      <div class="fox-mark">🦊❄️</div>
+
+      <label class="image-box" for="imageInput">
+        <img id="heroImage" alt="대표 이미지" />
+        <span id="imageGuide">이미지 넣기</span>
+      </label>
+      <input id="imageInput" type="file" accept="image/*" hidden />
     </header>
 
     <input id="searchInput" placeholder="🐾여우 발자국 찾기..." />

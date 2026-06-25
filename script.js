@@ -4,7 +4,21 @@ const csvUrl=`https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out
 
 const listEl=document.getElementById('list');
 const searchInput=document.getElementById('searchInput');
+const imageInput=document.getElementById('imageInput');
+const imageBox=document.querySelector('.image-box');
+const heroImage=document.getElementById('heroImage');
 let data=[];
+
+imageInput.addEventListener('change',()=>{
+  const file=imageInput.files?.[0];
+  if(!file) return;
+  const reader=new FileReader();
+  reader.onload=()=>{
+    heroImage.src=reader.result;
+    imageBox.classList.add('has-image');
+  };
+  reader.readAsDataURL(file);
+});
 
 fetch(csvUrl)
 .then(r=>r.text())
